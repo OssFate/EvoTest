@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvoTest.Web", "EvoTest.Web\EvoTest.Web.csproj", "{6DA30F02-8823-46EE-B495-0DA2A2C44EBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvoTest.Api", "EvoTest.Api\EvoTest.Api.csproj", "{28196C30-9DDD-4034-B1E4-ED33B6D7A7FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DA30F02-8823-46EE-B495-0DA2A2C44EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA30F02-8823-46EE-B495-0DA2A2C44EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA30F02-8823-46EE-B495-0DA2A2C44EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA30F02-8823-46EE-B495-0DA2A2C44EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28196C30-9DDD-4034-B1E4-ED33B6D7A7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28196C30-9DDD-4034-B1E4-ED33B6D7A7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28196C30-9DDD-4034-B1E4-ED33B6D7A7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28196C30-9DDD-4034-B1E4-ED33B6D7A7FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
