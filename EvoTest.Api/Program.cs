@@ -10,6 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("https://localhost:44468");
+    });
+});
+
 // Add DB
 builder.Services.AddDbContext<AirportContext>(options =>
 {
@@ -32,6 +40,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 
 // Add Calls
 AirportCalls.SetCalls(app);
