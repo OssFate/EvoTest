@@ -101,6 +101,7 @@ public static class AirportCalls
                 async (int airportId, IAirportService airportService) =>
                     await airportService.DeleteAirport(airportId))
             .WithTags(baseApiTag);
+        
     }
     
     private static void SetPassengerTypeCrud(IEndpointRouteBuilder app)

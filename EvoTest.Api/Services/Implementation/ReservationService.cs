@@ -31,19 +31,36 @@ public class ReservationService: IReservationService
 
     public async Task<List<Reservation>> GetAllReservations()
     {
-        var result = await _airportContext.Reservations.ToListAsync();
+        var result = await _airportContext.Reservations
+            .Include(i => i.Origin)
+            .Include(i => i.Destination)
+            .Include(i => i.AirLine)
+            .Include(i => i.PassengerType)
+            .ToListAsync();
         return result;
     }
 
     public async Task<Reservation?> GetReservationById(int reservationId)
     {
-        var result = await _airportContext.Reservations.Where(a => a.Id == reservationId).FirstOrDefaultAsync();
+        var result = await _airportContext.Reservations
+            .Include(i => i.Origin)
+            .Include(i => i.Destination)
+            .Include(i => i.AirLine)
+            .Include(i => i.PassengerType)
+            .Where(a => a.Id == reservationId)
+            .FirstOrDefaultAsync();
         return result;
     }
 
     public async Task<Reservation?> DeleteReservation(int reservationId)
     {
-        var reservation = await _airportContext.Reservations.Where(a => a.Id == reservationId).FirstOrDefaultAsync();
+        var reservation = await _airportContext.Reservations
+            .Include(i => i.Origin)
+            .Include(i => i.Destination)
+            .Include(i => i.AirLine)
+            .Include(i => i.PassengerType)
+            .Where(a => a.Id == reservationId).FirstOrDefaultAsync();
+        
         if (reservation == null) return null;
 
         _airportContext.Reservations.Remove(reservation);
