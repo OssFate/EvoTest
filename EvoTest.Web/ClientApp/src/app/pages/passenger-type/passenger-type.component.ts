@@ -2,21 +2,21 @@
 import {HttpClient} from "@angular/common/http";
 import {BasePageModel} from "../../model/base-page.model";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {AirportModel} from "../../model/data/airport.model";
 import {GlobalHeader} from "../../global/api-header.global";
+import {PassengerTypeModel} from "../../model/data/passenger-type.model";
 
 @Component({
-  selector: 'airport-component',
-  templateUrl: './airport.component.html',
+  selector: 'passenger-type-component',
+  templateUrl: './passenger-type.component.html',
 })
-export class AirportComponent implements OnInit, BasePageModel {
+export class PassengerTypeComponent implements OnInit, BasePageModel {
 
   title: string;
   lastInsertId: number;
-  itemList: AirportModel[];
-  foundItem: AirportModel | undefined;
+  itemList: PassengerTypeModel[];
+  foundItem: PassengerTypeModel | undefined;
   updatedItem: boolean | undefined;
-  deletedItem: AirportModel | undefined;
+  deletedItem: PassengerTypeModel | undefined;
 
   insertForm: FormGroup;
   findForm: FormGroup;
@@ -24,12 +24,13 @@ export class AirportComponent implements OnInit, BasePageModel {
   deleteForm: FormGroup;
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string, private fb: FormBuilder) {
-    this.title = 'Airport';
+    this.title = 'Passenger Type';
     this.lastInsertId = 0;
     this.itemList = [];
 
     this.insertForm = this.fb.group({
       name: '',
+      price: '',
     });
 
     this.findForm = this.fb.group({
@@ -39,6 +40,7 @@ export class AirportComponent implements OnInit, BasePageModel {
     this.updateForm = this.fb.group({
       id: '',
       name: '',
+      price: '',
     });
 
     this.deleteForm = this.fb.group({
@@ -51,7 +53,7 @@ export class AirportComponent implements OnInit, BasePageModel {
   }
 
   insert() {
-    this.httpClient.post(`${this.apiUrl}/airport/AddAirport`, JSON.stringify(this.insertForm.value), GlobalHeader)
+    this.httpClient.post(`${this.apiUrl}/passengerType/AddPassengerType`, JSON.stringify(this.insertForm.value), GlobalHeader)
       .subscribe(
         res => {
           this.lastInsertId = res as number;
@@ -64,10 +66,10 @@ export class AirportComponent implements OnInit, BasePageModel {
   }
 
   getData() {
-    this.httpClient.get(`${this.apiUrl}/airport/getAllAirports`)
+    this.httpClient.get(`${this.apiUrl}/passengerType/getAllPassengerTypes`)
       .subscribe(
         res => {
-          this.itemList = res as AirportModel[];
+          this.itemList = res as PassengerTypeModel[];
         },
         error => {
           console.error(error);
@@ -77,10 +79,10 @@ export class AirportComponent implements OnInit, BasePageModel {
 
   findItem() {
     const findValue = this.findForm.value;
-    this.httpClient.get(`${this.apiUrl}/airport/getAirport/${findValue.id}`)
+    this.httpClient.get(`${this.apiUrl}/passengerType/getPassengerType/${findValue.id}`)
       .subscribe(
         res => {
-          this.foundItem = res as AirportModel;
+          this.foundItem = res as PassengerTypeModel;
         },
         err => {
           console.error(err);
@@ -89,7 +91,7 @@ export class AirportComponent implements OnInit, BasePageModel {
   }
 
   update() {
-    this.httpClient.put(`${this.apiUrl}/airport/updateAirport`, this.updateForm.value)
+    this.httpClient.put(`${this.apiUrl}/passengerType/updatePassengerType`, this.updateForm.value)
       .subscribe(
         res => {
           this.updatedItem = res as boolean;
@@ -107,10 +109,10 @@ export class AirportComponent implements OnInit, BasePageModel {
 
   delete() {
     const deleteItem = this.deleteForm.value;
-    this.httpClient.delete(`${this.apiUrl}/airport/deleteAirport/${deleteItem.id}`)
+    this.httpClient.delete(`${this.apiUrl}/passengerType/deletePassengerType/${deleteItem.id}`)
       .subscribe(
         res => {
-          this.deletedItem = res as AirportModel;
+          this.deletedItem = res as PassengerTypeModel;
 
           this.getData();
         },

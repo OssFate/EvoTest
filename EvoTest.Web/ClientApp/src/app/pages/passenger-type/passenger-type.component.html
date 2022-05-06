@@ -15,13 +15,15 @@
           <thead>
           <tr>
             <th scope="col">Id</th>
-            <th scope="col">Nombre</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let item of itemList">
             <th scope="row">{{item.id}}</th>
             <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
           </tr>
           </tbody>
         </table>
@@ -42,11 +44,15 @@
       <div class="accordion-body">
         <form class="row" [formGroup]="insertForm" (submit)="insert()">
           <div class="col-sm-3">
-            <label class="form-label">Aeropuerto</label>
+            <label class="form-label">{{title}}</label>
             <input class="form-control" placeholder="Nombre" formControlName="name" />
           </div>
+          <div class="col-sm-3">
+            <label class="form-label">Price</label>
+            <input class="form-control" placeholder="Precio" formControlName="price" />
+          </div>
           <div class="pt-2">
-            <button class="btn btn-primary col-sm-3" type="submit">Insertar</button>
+            <button class="btn btn-primary col-sm-3" type="submit">Insert</button>
           </div>
         </form>
       </div>
@@ -72,7 +78,7 @@
                 <input class="form-control" placeholder="Id" formControlName="id" />
               </div>
               <div class="pt-2">
-                <button class="btn btn-primary col-sm-12">Buscar</button>
+                <button class="btn btn-primary col-sm-12">Search</button>
               </div>
             </form>
           </div>
@@ -85,10 +91,16 @@
                   <label class="form-control-plaintext" id="foundId">{{foundItem.id}}</label>
                 </div>
               </div>
-              <div class="row">
+              <div class="mb-2 row">
                 <label class="col-sm-3 col-form-label fw-bold" for="foundName">Name</label>
                 <div class="col-sm-9">
                   <label class="form-control-plaintext" id="foundName">{{foundItem.name}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label fw-bold" for="foundPrice">Price</label>
+                <div class="col-sm-9">
+                  <label class="form-control-plaintext" id="foundPrice">{{foundItem.price}}</label>
                 </div>
               </div>
             </div>
@@ -115,15 +127,19 @@
             <input class="form-control" placeholder="Id" formControlName="id" />
           </div>
           <div class="col-sm-3">
-            <label class="form-label">Nombre</label>
+            <label class="form-label">Name</label>
             <input class="form-control" placeholder="Nombre" formControlName="name" />
           </div>
+          <div class="col-sm-3">
+            <label class="form-label">Price</label>
+            <input class="form-control" placeholder="Precio" formControlName="price" />
+          </div>
           <div class="pt-2">
-            <button class="btn btn-primary col-sm-3" type="submit">Actualizar</button>
+            <button class="btn btn-primary col-sm-3" type="submit">Update</button>
           </div>
           <div class="pt-2" *ngIf="updatedItem !== undefined">
             <label class="col-sm-3 text-center" [ngClass]="updatedItem ? 'text-success' : 'text-danger'">
-              {{ updatedItem ? title + ' Actualizado' : 'Error al actualizar' }}
+              {{ updatedItem ? title + ' updated' : 'Error updating' }}
             </label>
           </div>
         </form>
@@ -150,7 +166,7 @@
                 <input class="form-control" placeholder="Id" formControlName="id" />
               </div>
               <div class="pt-2">
-                <button class="btn btn-danger col-sm-12">Eliminar</button>
+                <button class="btn btn-danger col-sm-12">Delete</button>
               </div>
             </form>
           </div>

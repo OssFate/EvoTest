@@ -1,0 +1,335 @@
+﻿<div class="accordion" id="accordionCrud">
+  <!-- List Accordion -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headerList">
+      <button class="accordion-button btn-outline-info" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseList"
+              aria-expanded="true" aria-controls="collapseList">
+        {{title}} List
+      </button>
+    </h2>
+    <div id="collapseList" class="accordion-collapse collapse show" aria-labelledby="headerList"
+         data-bs-parent="#accordionCrud">
+      <div class="accordion-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Origin</th>
+            <th scope="col">DepartureTime</th>
+            <th scope="col">Destination</th>
+            <th scope="col">ArrivalTime</th>
+            <th scope="col">Airline</th>
+            <th scope="col">FlyNumber</th>
+            <th scope="col">PassengerType</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of itemList">
+            <th scope="row">{{item.id}}</th>
+            <td>{{item.origin.name}}</td>
+            <td>{{item.departureTime | date: 'short'}}</td>
+            <td>{{item.destination.name}}</td>
+            <td>{{item.arrivalTime | date: 'short'}}</td>
+            <td>{{item.airLine.name}}</td>
+            <td>{{item.flyNumber}}</td>
+            <td>{{item.passengerType.selectText}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Insert Accordion -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingInsert">
+      <button class="accordion-button btn-outline-success" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseInsert"
+              aria-expanded="false" aria-controls="collapseInsert">
+        Insert {{title}}
+      </button>
+    </h2>
+    <div id="collapseInsert" class="accordion-collapse collapse" aria-labelledby="headingInsert"
+         data-bs-parent="#accordionCrud">
+      <div class="accordion-body">
+        <form class="row" [formGroup]="insertForm" (submit)="insert()">
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Origin</label>
+            <select class="form-select" formControlName="origin" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of airportOptions" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">DepartureTime</label>
+            <input type="datetime-local" class="form-control" placeholder="Departure Time" formControlName="departureTime" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Destination</label>
+            <select class="form-select" formControlName="destination" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of airportOptions" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">ArrivalTime</label>
+            <input type="datetime-local" class="form-control" placeholder="Departure Time" formControlName="arrivalTime" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Airline</label>
+            <select class="form-select" formControlName="airline" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of airlineOptions" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">FlyNumber</label>
+            <input class="form-control" placeholder="FlyNumber" formControlName="flyNumber" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">PassengerType</label>
+            <select class="form-select" formControlName="passengerType" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of passengerTypeOptions" [ngValue]="item">{{item.selectText}}</option>
+            </select>
+          </div>
+          <div class="pt-2">
+            <button class="btn btn-primary col-sm-3" type="submit">Insertar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Find Accordion -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingFind">
+      <button class="accordion-button btn-outline-info" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseFind"
+              aria-expanded="false" aria-controls="collapseFind">
+        Find {{title}} by Id
+      </button>
+    </h2>
+    <div id="collapseFind" class="accordion-collapse collapse" aria-labelledby="headingFind"
+         data-bs-parent="#accordionCrud">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <form class="form-control" [formGroup]="findForm" (submit)="findItem()">
+              <div>
+                <label class="form-label">{{title}} Id</label>
+                <input class="form-control" placeholder="Id" formControlName="id" />
+              </div>
+              <div class="pt-2">
+                <button class="btn btn-primary col-sm-12">Buscar</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-5" *ngIf="foundItem">
+            <div class="form-control">
+              <h5>{{title}} Found</h5>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundId">Id</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundId">{{foundItem.id}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundOrigin">Origin</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundOrigin">{{foundItem.origin.name}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundDeparture">DepartureTime</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundDeparture">{{foundItem.departureTime | date: 'short' }}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundDestination">Destination</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundDestination">{{foundItem.destination.name}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundArrival">ArrivalTime</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundArrival">{{foundItem.arrivalTime | date: 'short'}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundAirline">Airline</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundAirline">{{foundItem.airLine.name}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundFly">FlyNumber</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundFly">{{foundItem.flyNumber}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-5 col-form-label fw-bold" for="foundPass">PassengerType</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="foundPass">{{foundItem.passengerType.selectText}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Update Accordion -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingUpdate">
+      <button class="accordion-button btn-outline-secondary" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseUpdate"
+              aria-expanded="false" aria-controls="collapseUpdate">
+        Update {{title}}
+      </button>
+    </h2>
+    <div id="collapseUpdate" class="accordion-collapse collapse" aria-labelledby="headingUpdate"
+         data-bs-parent="#accordionCrud">
+      <div class="accordion-body">
+        <form class="row" [formGroup]="updateForm" (submit)="update()">
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Id</label>
+            <input class="form-control" placeholder="Id" formControlName="id" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Origin</label>
+            <select class="form-select" formControlName="origin" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of airportOptions" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">DepartureTime</label>
+            <input type="datetime-local" class="form-control" placeholder="Departure Time" formControlName="departureTime" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Destination</label>
+            <select class="form-select" formControlName="destination" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of airportOptions" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">ArrivalTime</label>
+            <input type="datetime-local" class="form-control" placeholder="Departure Time" formControlName="arrivalTime" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">Airline</label>
+            <select class="form-select" formControlName="airline" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of airlineOptions" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">FlyNumber</label>
+            <input class="form-control" placeholder="FlyNumber" formControlName="flyNumber" />
+          </div>
+          <div class="pt-2 col-sm-3">
+            <label class="form-label">PassengerType</label>
+            <select class="form-select" formControlName="passengerType" required>
+              <option value="">Select...</option>
+              <option *ngFor="let item of passengerTypeOptions" [ngValue]="item">{{item.selectText}}</option>
+            </select>
+          </div>
+          <div class="pt-2">
+            <button class="btn btn-primary col-sm-3" type="submit">Actualizar</button>
+          </div>
+          <div class="pt-2" *ngIf="updatedItem !== undefined">
+            <label class="col-sm-3 text-center" [ngClass]="updatedItem ? 'text-success' : 'text-danger'">
+              {{ updatedItem ? title + ' Actualizado' : 'Error al actualizar' }}
+            </label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Delete Accordion -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingDelete">
+      <button class="accordion-button btn-outline-danger" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseDelete"
+              aria-expanded="false" aria-controls="collapseDelete">
+        Delete {{title}}
+      </button>
+    </h2>
+    <div id="collapseDelete" class="accordion-collapse collapse" aria-labelledby="headingDelete"
+         data-bs-parent="#accordionCrud">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <form class="form-control" [formGroup]="deleteForm" (submit)="delete()">
+              <div>
+                <label class="form-label">{{title}} Id</label>
+                <input class="form-control" placeholder="Id" formControlName="id" />
+              </div>
+              <div class="pt-2">
+                <button class="btn btn-danger col-sm-12">Eliminar</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-7" *ngIf="deletedItem">
+            <div class="form-control">
+              <h5>{{title}} Deleted</h5>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedId">Id</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedId">{{deletedItem.id}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedOrigin">Origin</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedOrigin">{{deletedItem.origin.name}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedDeparture">DepartureTime</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedDeparture">{{deletedItem.departureTime | date: 'short' }}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedDestination">Destination</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedDestination">{{deletedItem.destination.name}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedArrival">ArrivalTime</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedArrival">{{deletedItem.arrivalTime | date: 'short'}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedAirline">Airline</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedAirline">{{deletedItem.airLine.name}}</label>
+                </div>
+              </div>
+              <div class="mb-2 row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedFly">FlyNumber</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedFly">{{deletedItem.flyNumber}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-5 col-form-label fw-bold" for="deletedPass">PassengerType</label>
+                <div class="col-sm-7">
+                  <label class="form-control-plaintext" id="deletedPass">{{deletedItem.passengerType.selectText}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
